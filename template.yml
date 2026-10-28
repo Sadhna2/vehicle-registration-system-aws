@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Spring Boot 2 API - com.nexturn.vehicleregistration::vehicle-registration-system-aws
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+
+Resources:
+  VehicleRegistrationSystemAwsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.nexturn.vehicleregistration.StreamLambdaHandler::handleRequest
+      Runtime: java21
+      CodeUri: .
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 30
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+
+Outputs:
+  VehicleRegistrationSystemAwsApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+    Export:
+      Name: VehicleRegistrationSystemAwsApi

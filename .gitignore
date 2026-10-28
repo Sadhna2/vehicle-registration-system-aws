@@ -1,0 +1,7 @@
+@"
+target/
+build/
+*.class
+*.log
+.env
+"@ | Set-Content .gitignore
